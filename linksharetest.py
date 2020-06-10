@@ -1,7 +1,7 @@
 
 import linkshare
 import secure_linkshareuserdata
-browser = linkshare.open(userdata.linkshare_user,userdata.linkshare_pass,False)
+browser = linkshare.open(secure_linkshareuserdata.linkshare_user,secure_linkshareuserdata.linkshare_pass,False)
 
 ret = linkshare.getlink(browser,'13526',
     'https://www.pc-koubou.jp/products/detail.php?product_id=723983&pre=bct1873_bnr',

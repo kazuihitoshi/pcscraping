@@ -125,7 +125,7 @@ for a in linuxproduct:
                         f.write('                 <div class="col-12">価格:'+'{:,}'.format(d)+'円</div>\n' )
                 d = a.get('linuxprice')
                 if d is not None:
-                        f.write('                 <div class="col-12">Linux選択で:' + '{:,}'.format(d) + '円の' + '{:,}'.format(a.get('realprice'))+'</div>\n')
+                        f.write('                 <div class="col-12">Linux選択で:' + '{:,}'.format(d) + '円の' + '{:,}'.format(a.get('realprice'))+'円</div>\n')
                 d = a.get('note')
                 if d is not None:
                         f.write('                 <div class="col-12">特徴:' + d + '</div>\n')

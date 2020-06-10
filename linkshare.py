@@ -15,7 +15,7 @@ def open(user, pas, headless=True):
     options = Options()
 
     if headless:
-        add_argument('--headless')
+        options.add_argument('--headless')
 
     browser = webdriver.Chrome(chrome_options=options)
     browser.implicitly_wait(3)

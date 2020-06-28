@@ -6,11 +6,16 @@ from selenium.webdriver.chrome.options import Options
 from html.parser import HTMLParser
 import urllib.parse 
 import datetime 
+import secure_linkshareuserdata
+import linkshare
+import bloggerpost
 
 targeturl ="https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/sc/laptops"
 outputfile = "dell.html"
 urltimeout = 60
 today = datetime.datetime.now().strftime('%Y/%m/%d')
+
+browser = linkshare.open(secure_linkshareuserdata.linkshare_user,secure_linkshareuserdata.linkshare_pass)
 
 def gethead(today,totalcount):
         ret ='<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">\n'
@@ -99,16 +104,17 @@ def checkLinuxAndGetPage(urlstring):
 
 #----- get webpage data
 linuxproduct = []
-for a in pclist(BeautifulSoup(urllib.request.urlopen(targeturl), "html.parser")):
-        #print (a)
-        bs = BeautifulSoup(urllib.request.urlopen(a,timeout=urltimeout), "html.parser")
-        for sec in bs.find_all("section",{'class':'ps-top'}):
-                linuxflag = 0
-                url='https:' + urllib.parse.quote(sec.find("a",{'class':'dellmetrics-iclickthru'}).get("href"))
-                getdat = checkLinuxAndGetPage(url)
+if True :
+        for a in pclist(BeautifulSoup(urllib.request.urlopen(targeturl), "html.parser")):
+                #print (a)
+                bs = BeautifulSoup(urllib.request.urlopen(a,timeout=urltimeout), "html.parser")
+                for sec in bs.find_all("section",{'class':'ps-top'}):
+                        linuxflag = 0
+                        url='https:' + urllib.parse.quote(sec.find("a",{'class':'dellmetrics-iclickthru'}).get("href"))
+                        getdat = checkLinuxAndGetPage(url)
 
-                if len(getdat) > 0:
-                        linuxproduct.append(getdat)  
+                        if len(getdat) > 0:
+                                linuxproduct.append(getdat)  
 #                        print (getdat)
 
 #linuxproduct.append(checkLinuxAndGetPage('https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/dell-latitude-5501/spd/latitude-15-5501-laptop/al5501'))
@@ -122,6 +128,8 @@ h = gethead(today,len(linuxproduct)+1)
 f.write(h)
 for a in linuxproduct:
         d = a.get('productname')
+        aff =linkshare.getlinkfinder(browser,'2557',d)
+
         if d is not None :
                 f.write('<div class="row box">\n')
                 f.write(' <div class="col-12 productname">' )
@@ -129,7 +137,10 @@ for a in linuxproduct:
                 dd = a.get('url')
 
                 if dd is not None:
-                        f.write('<a href="' + dd + '">'+d+'</a>')
+                        if aff.get('url') != '':
+                                f.write(aff.get('url'))
+                        else:
+                                f.write('<a href="' + dd + '">'+d+'</a>')
                 else:
                         f.write( d )
                 
@@ -137,11 +148,16 @@ for a in linuxproduct:
         
          
                 if dd is not None:
-                        f.write(' <div class="col-4"><a href="' + dd +'">\n' )
-                        d = a.get('imageurl')
-                        if d is not None:
-                                f.write('<img src="'+d+'" width="100%">\n')
-                        f.write('</a></div>\n')
+                        f.write(' <div class="col-4">\n' )
+                        if aff.get('imageurl') != '':
+                                f.write(aff.get('imageurl'))
+                        else:
+                                f.write('<a href="' + dd +'">\n')
+                                d = a.get('imageurl')
+                                if d is not None:
+                                        f.write('<img src="'+d+'" width="100%">\n')
+                                f.write('</a>\n')
+                        f.write('</div>\n')
                 
                 f.write(' <div class="col-8">\n')
                 f.write('         <div class="row">\n')
@@ -158,5 +174,8 @@ for a in linuxproduct:
                 f.write(' </div>\n')
                 f.write('</div>\n')
 f.close()
-
+body=open('dell.html',encoding='utf-8',mode='r').read()
+p = bloggerpost.open()
+title='Linux搭載ノートパソコンがDELLで買ます '+str(len(linuxproduct)+1)+'機種を掲載 '+today+'更新'
+bloggerpost.update(posts=p,postId='7870701470902384798',title=title,body=body)
 

@@ -18,7 +18,7 @@ def open(user, pas, headless=True):
         options.add_argument('--headless')
 
     browser = webdriver.Chrome(chrome_options=options)
-    browser.implicitly_wait(3)
+    browser.implicitly_wait(6)
 
     browser.get(targeturl)
     textbox=browser.find_element_by_id('Lid')
@@ -41,6 +41,8 @@ def open(user, pas, headless=True):
 
 def getlink(browser,ecsiteid,url,imageurl,textmessage):
     ret = {}
+    handle_array = browser.window_handles
+    browser.switch_to.window(handle_array[len(handle_array)-1])
     browser.get(deeplink)
 
     sel = Select(browser.find_element_by_id('advertiserSelect'))
@@ -99,6 +101,8 @@ def close(browser):
 
 def getlinkfinder(browser,ecsiteid,productname):
     ret = {}
+    handle_array = browser.window_handles
+    browser.switch_to.window(handle_array[len(handle_array)-1])
     browser.get(linkfinder)
     sel = Select(browser.find_element_by_name('mid'))
     sel.select_by_value(ecsiteid) #13526:パソコン工房
@@ -137,23 +141,26 @@ def getlinkfinder(browser,ecsiteid,productname):
 
             sel = browser.find_element_by_tag_name('textarea')
             if sel is not None:
-                ret['imageurl'] = sel.text
+                ret['imageurl'] = sel.get_attribute('value') #text
 
             sels = browser.find_elements_by_css_selector('.radio')
             if sels is not None:
                 if len(sels)> 0:
+                    #sel.clear()
                     sels[1].click()
-                    sel = browser.find_element_by_tag_name('textarea')
+                    #sel =  browser.find_element_by_tag_name('textarea')
                     if sel is not None:
-                        ret['url'] = sel.text
+                        ret['url'] = sel.get_attribute('value')
             
                     #break
             sel = browser.find_element_by_css_selector('#myform > div > div > div > span > input[type=image]')
             if sel is not None:
                 sel.click()
+                handle_array = browser.window_handles
+                browser.switch_to.window(handle_array[len(handle_array)-1])
     except:
         a=0
-        
+
     return (ret)
 
 

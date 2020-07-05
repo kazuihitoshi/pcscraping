@@ -12,7 +12,7 @@ import bloggerpost
 
 targeturl ="https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/sc/laptops"
 outputfile = "dell.html"
-urltimeout = 60
+urltimeout = 120
 today = datetime.datetime.now().strftime('%Y/%m/%d')
 
 browser = linkshare.open(secure_linkshareuserdata.linkshare_user,secure_linkshareuserdata.linkshare_pass)
@@ -24,12 +24,12 @@ def gethead(today,totalcount):
         ret+='<meta name="twitter:card" content="summary_large_image" />\n'
         ret+='<meta name="twitter:site" content="@kazuihitoshi" />\n'
         ret+='<meta property="og:url" content="https://ubuntu84.blogspot.com/2020/05/dellubuntu-2020531.html" />\n'
-        ret+='<meta property="og:title" content="ubuntuノートパソコンがDELLで買ます 40機種を掲載 2020/6/14更新" />\n'
-        ret+='<meta property="og:description" content="なんと40機種もUbuntuプレインストール指定可能な製品が見つかりました。" />\n'
+        ret+='<meta property="og:title" content="ubuntuノートパソコンがDELLで買ます '+str(totalcount)+'機種を掲載 '+today+'更新" />\n'
+        ret+='<meta property="og:description" content="なんと'+str(totalcount)+'機種もUbuntuプレインストール指定可能な製品が見つかりました。" />\n'
         ret+='<meta property="og:image" content="https://3.bp.blogspot.com/-6yNB7wFPCTE/XuXJWRHJ--I/AAAAAAAAj9Y/4zSkoQxkqLkVS5FMbearatX-zShMPhWEgCLcBGAsYHQ/s1600/dell%252Bubuntu.png" />\n'
         ret+='<h2>はじめに</h2>\n'
         ret+='<p>DELLで見積もりを取る際に、たまにOSの選択肢にLinuxが表示されるものがあり、一体どの程度あるものか調べてみました。</p>\n'
-        ret+='<p>なんと40機種もUbuntuプレインストール指定可能な製品が見つかりました。</p>\n'
+        ret+='<p>なんと'+str(totalcount)+'機種もUbuntuプレインストール指定可能な製品が見つかりました。</p>\n'
         ret+='<p>それも嬉しいことに、Win10Proを選択した場合に比べ約2万円お安く購入可能です。</p>\n'
         ret+='<p>皆様のLinuxライフにお役に立てると嬉しいです。それでは早速行ってみます。</p>\n'
         ret+='<br>\n'
@@ -117,65 +117,82 @@ if True :
                                 linuxproduct.append(getdat)  
 #                        print (getdat)
 
+#linuxproduct.append({'productname': '【Dell】Dell Latitude 350', 'url': 'https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/dell-latitude-7310/spd/latitude-13-7310-2-in-1-laptop/al7310', 'imageurl': 'https://i.dell.com/sites/csimages/Video_Imagery/all/cs2004g0010-68001-latitude-family-fy21-7000series-thumbnail.jpg', 'linuxprice': -19600, 'price': 211700,'realprice':100})
+
 #linuxproduct.append(checkLinuxAndGetPage('https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/dell-latitude-5501/spd/latitude-15-5501-laptop/al5501'))
-#linuxproduct.append({'productname': 'Dell Latitude 7310', 'url': 'https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/dell-latitude-7310/spd/latitude-13-7310-2-in-1-laptop/al7310', 'imageurl': 'https://i.dell.com/sites/csimages/Video_Imagery/all/cs2004g0010-68001-latitude-family-fy21-7000series-thumbnail.jpg', 'linuxprice': '- 19,600円', 'price': '\n            211,700円\n        '})
-#linuxproduct.append({'productname': 'Dell Latitude 7300', 'url': 'https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/dell-latitude-7300/spd/latitude-13-7300-laptop/al7300', 'imageurl': 'https://i.dell.com/sites/csimages/Video_Imagery/all/latitude-7000-new.jpg', 'linuxprice': '- 19,600円', 'price': '\n            205,200円\n        '})
-#linuxproduct.append({'productname': 'Dell Laaaaaatitude 7300'})
+#linuxproduct.append({'productname': 'Latitude 3300', 'url': 'https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/dell-latitude-7310/spd/latitude-13-7310-2-in-1-laptop/al7310', 'imageurl': 'https://i.dell.com/sites/csimages/Video_Imagery/all/cs2004g0010-68001-latitude-family-fy21-7000series-thumbnail.jpg', 'linuxprice': -19600, 'price': 211700,'realprice':100})
+#linuxproduct.append({'productname': 'Latitude 3300', 'url': 'https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/dell-latitude-7310/spd/latitude-13-7310-2-in-1-laptop/al7310', 'imageurl': 'https://i.dell.com/sites/csimages/Video_Imagery/all/cs2004g0010-68001-latitude-family-fy21-7000series-thumbnail.jpg', 'linuxprice': -19600, 'price': 211700,'realprice':100})
+#linuxproduct.append({'productname': 'Latitude 33xxx', 'url': 'https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/dell-latitude-7310/spd/latitude-13-7310-2-in-1-laptop/al7310', 'imageurl': 'https://i.dell.com/sites/csimages/Video_Imagery/all/cs2004g0010-68001-latitude-family-fy21-7000series-thumbnail.jpg', 'linuxprice': -19600, 'price': 211700,'realprice':100})
+#linuxproduct.append({'productname': 'Latitude 3300', 'url': 'https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/dell-latitude-7310/spd/latitude-13-7310-2-in-1-laptop/al7310', 'imageurl': 'https://i.dell.com/sites/csimages/Video_Imagery/all/cs2004g0010-68001-latitude-family-fy21-7000series-thumbnail.jpg', 'linuxprice': -19600, 'price': 211700,'realprice':100})
+#linuxproduct.append({'productname': 'Dell Latitude 7310', 'url': 'https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/dell-latitude-7310/spd/latitude-13-7310-2-in-1-laptop/al7310', 
+#'imageurl': 'https://i.dell.com/sites/csimages/Video_Imagery/all/cs2004g0010-68001-latitude-family-fy21-7000series-thumbnail.jpg', 'linuxprice': '- 19,600円', 
+#'price': '211,700円','realprice':100})
+#linuxproduct.append({'productname': 'Dell Latitude 7300', 'url': 'https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/dell-latitude-7300/spd/latitude-13-7300-laptop/al7300', 'imageurl': 'https://i.dell.com/sites/csimages/Video_Imagery/all/latitude-7000-new.jpg', 'linuxprice': '- 19,600円', 'price': '\n            205,200円\n        ','realprice':100})
+#linuxproduct.append({'productname': 'Dell Latitude 3500','realprice':100})
 
-f = open(outputfile,encoding="utf-8",mode="w")
-linuxproduct = sorted(linuxproduct, key=lambda x:x['realprice'])
-h = gethead(today,len(linuxproduct)+1)
-f.write(h)
-for a in linuxproduct:
-        d = a.get('productname')
-        aff =linkshare.getlinkfinder(browser,'2557',d)
+if True :
+	f = open(outputfile,encoding="utf-8",mode="w")
+	linuxproduct = sorted(linuxproduct, key=lambda x:x['realprice'])
+	h = gethead(today,len(linuxproduct)+1)
+	f.write(h)
+	for a in linuxproduct:
+		d = a.get('productname')
+		#print('d:'+d)
+		aff =linkshare.getlinkfinder(browser,'2557',d)
+		#print('d:'+d)
+		#print(aff)
 
-        if d is not None :
-                f.write('<div class="row box">\n')
-                f.write(' <div class="col-12 productname">' )
-                
-                dd = a.get('url')
+		if d is not None :
+			f.write('<div class="row box">\n')
+			f.write(' <div class="col-12 productname">' )
+			
+			dd = a.get('url')
+			#print( 'dd:'+dd )
 
-                if dd is not None:
-                        if aff.get('url') != '':
-                                f.write(aff.get('url'))
-                        else:
-                                f.write('<a href="' + dd + '">'+d+'</a>')
-                else:
-                        f.write( d )
-                
-                f.write('</div>\n')
-        
-         
-                if dd is not None:
-                        f.write(' <div class="col-4">\n' )
-                        if aff.get('imageurl') != '':
-                                f.write(aff.get('imageurl'))
-                        else:
-                                f.write('<a href="' + dd +'">\n')
-                                d = a.get('imageurl')
-                                if d is not None:
-                                        f.write('<img src="'+d+'" width="100%">\n')
-                                f.write('</a>\n')
-                        f.write('</div>\n')
-                
-                f.write(' <div class="col-8">\n')
-                f.write('         <div class="row">\n')
-                d = a.get('price')
-                if d is not None:
-                        f.write('                 <div class="col-12">価格:'+'{:,}'.format(d)+'円</div>\n' )
-                d = a.get('linuxprice')
-                if d is not None:
-                        f.write('                 <div class="col-12">Linux選択で:' + '{:,}'.format(d) + '円の' + '{:,}'.format(a.get('realprice'))+'円</div>\n')
-                d = a.get('note')
-                if d is not None:
-                        f.write('                 <div class="col-12">特徴:' + d + '</div>\n')
-                f.write('         </div>\n')
-                f.write(' </div>\n')
-                f.write('</div>\n')
-f.close()
-body=open('dell.html',encoding='utf-8',mode='r').read()
-p = bloggerpost.open()
-title='Linux搭載ノートパソコンがDELLで買ます '+str(len(linuxproduct)+1)+'機種を掲載 '+today+'更新'
-bloggerpost.update(posts=p,postId='7870701470902384798',title=title,body=body)
+			if dd is not None:
+				if aff.get('url') != '':
+					f.write(aff.get('url'))
+				else:
+					f.write('<a href="' + dd + '">'+d+'</a>')
+			else:
+				f.write( d )
+			
+			f.write('</div>\n')
+		
+		 
+			if dd is not None:
+				f.write(' <div class="col-4">\n' )
+				if aff.get('imageurl') != '':
+					f.write(aff.get('imageurl'))
+				else:
+					f.write('<a href="' + dd +'">\n')
+					d = a.get('imageurl')
+					if d is not None:
+						f.write('<img src="'+d+'" width="100%">\n')
+					f.write('</a>\n')
+				f.write('</div>\n')
+			
+			f.write(' <div class="col-8">\n')
+			f.write('         <div class="row">\n')
+			d = a.get('price')
+			if d is not None:
+				f.write('                 <div class="col-12">価格:' + '{:,}'.format(d) + '円</div>\n' )
+			d = a.get('linuxprice')
+			if d is not None:
+				f.write('                 <div class="col-12">Linux選択で:' + '{:,}'.format(d) + '円の' + '{:,}'.format(a.get('realprice'))+'円</div>\n')
+			d = a.get('note')
+			if d is not None:
+				f.write('                 <div class="col-12">特徴:' + d + '</div>\n')
+			f.write('         </div>\n')
+			f.write(' </div>\n')
+			f.write('</div>\n')
+	f.close()
+
+linkshare.close(browser)
+
+if True :
+	body=open('dell.html',encoding='utf-8',mode='r').read()
+	p = bloggerpost.open()
+	title='Linux搭載ノートパソコンがDELLで買ます '+str(len(linuxproduct)+1)+'機種を掲載 '+today+'更新'
+	bloggerpost.update(posts=p,postId='7870701470902384798',title=title,body=body)
 

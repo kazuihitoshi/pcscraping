@@ -15,7 +15,7 @@ outputfile = "dell.html"
 urltimeout = 120
 today = datetime.datetime.now().strftime('%Y/%m/%d')
 
-browser = linkshare.open(secure_linkshareuserdata.linkshare_user,secure_linkshareuserdata.linkshare_pass)
+browser = linkshare.open(secure_linkshareuserdata.linkshare_user,secure_linkshareuserdata.linkshare_pass,True)
 
 def gethead(today,totalcount):
         ret ='<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">\n'
@@ -24,16 +24,17 @@ def gethead(today,totalcount):
         ret+='<meta name="twitter:card" content="summary_large_image" />\n'
         ret+='<meta name="twitter:site" content="@kazuihitoshi" />\n'
         ret+='<meta property="og:url" content="https://ubuntu84.blogspot.com/2020/05/dellubuntu-2020531.html" />\n'
-        ret+='<meta property="og:title" content="ubuntuノートパソコンがDELLで買ます '+str(totalcount)+'機種を掲載 '+today+'更新" />\n'
-        ret+='<meta property="og:description" content="なんと'+str(totalcount)+'機種もUbuntuプレインストール指定可能な製品が見つかりました。" />\n'
+        ret+='<meta property="og:title" content="Linuxノートパソコンが買える DELL製'+str(totalcount)+'機種 '+today+'更新" />\n'
+        ret+='<meta property="og:description" content="DELLサイトで見つけたLinux指定可能なノートパソコン'+str(totalcount)+'機種を掲載しています。" />\n'
         ret+='<meta property="og:image" content="https://3.bp.blogspot.com/-6yNB7wFPCTE/XuXJWRHJ--I/AAAAAAAAj9Y/4zSkoQxkqLkVS5FMbearatX-zShMPhWEgCLcBGAsYHQ/s1600/dell%252Bubuntu.png" />\n'
         ret+='<h2>はじめに</h2>\n'
-        ret+='<p>DELLで見積もりを取る際に、たまにOSの選択肢にLinuxが表示されるものがあり、一体どの程度あるものか調べてみました。</p>\n'
-        ret+='<p>なんと'+str(totalcount)+'機種もUbuntuプレインストール指定可能な製品が見つかりました。</p>\n'
+        ret+='<p>Linuxが搭載されたノートパソコンってなかなかないですよね。デスクトップパソコンやサーバ機であれば販売されているとこありますが、ノートパソコンになるとほとんど無いように思います。</P>\n'
+        ret+='<p>ノートパソコンはWindowsが搭載されているものと、ほぼ諦めていたのですが、DELLサイトでOS選択肢にLinuxが表示されるものを見つけまして、一体どの程度の機種に指定できるのか調べてみました。</p>\n'
+        ret+='<p>なんと'+str(totalcount)+'機種もLinuxディストリビューションで人気のUbuntuプレインストール指定可能な製品が見つかりました。</p>\n'
         ret+='<p>それも嬉しいことに、Win10Proを選択した場合に比べ約2万円お安く購入可能です。</p>\n'
         ret+='<p>皆様のLinuxライフにお役に立てると嬉しいです。それでは早速行ってみます。</p>\n'
         ret+='<br>\n'
-        ret+='<h2>DELLで買えるUbuntuプレインストールパソコン</h2>\n'
+        ret+='<h2>DELLで買えるLinux(Ubuntu)プレインストールパソコン</h2>\n'
         ret+='<p>'+today+'の情報です。'+str(totalcount)+'機種を安価な順に並べています。</p>\n'        
         return(ret)
 
@@ -193,6 +194,6 @@ linkshare.close(browser)
 if True :
 	body=open('dell.html',encoding='utf-8',mode='r').read()
 	p = bloggerpost.open()
-	title='Linux搭載ノートパソコンがDELLで買ます '+str(len(linuxproduct)+1)+'機種を掲載 '+today+'更新'
+	title='Linuxノートパソコンが買える DELL製'+str(len(linuxproduct)+1)+'機種 '+today+'更新'
 	bloggerpost.update(posts=p,postId='7870701470902384798',title=title,body=body)
 

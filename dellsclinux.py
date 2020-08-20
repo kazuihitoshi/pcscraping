@@ -41,15 +41,15 @@ def gethead(today,totalcount):
 def pclist(soup):
         list=[]
         cnt = 0
-        for nth_child in soup.select("#cat-content-container > div.cat-off-screen-pane"):
-                for doccol in nth_child.find_all("div",{'class':'fran'}):
-                        for docrow in doccol.find_all("div",{'class':'ser'}):
-                                for li in docrow.find("ul").find_all("li"):
-                                        s=li.find("a")
-                                        if s != -1 :
-                                                cnt+=1
-                                                list.append('https:'+urllib.parse.quote(s.get("href")))
-                                                #print (s.get("href")+':'+s.get_text())
+        for nth_child in soup.select("#cat-fran-rows > div.cat-fran-card"):
+                for doccol in nth_child.find_all("div",{'class':'cat-fran-card-img'}):
+                        #for docrow in doccol.find_all("div",{'class':'ser'}):
+                        #        for li in docrow.find("ul").find_all("li"):
+                        s=doccol.find("a")
+                        if s != -1 :
+                                cnt+=1
+                                list.append('https:'+urllib.parse.quote(s.get("href")))
+                                #print (s.get("href")+':'+s.get_text())
         return ( list )
 
 def cVal(src):
@@ -70,7 +70,7 @@ def checkLinuxAndGetPage(urlstring):
                         lo = lo.get('aria-label') #opt.get_text().lower()
                 if lo is not None:
                         lo = lo.lower()
-                        if lo.find('linux') > 0 or lo.find('ubuntu') >0 :
+                        if ( lo.find('linux') >= 0 or lo.find('ubuntu') >=0 ) and lo.find('追加ソフトウェア') != 0 :
                                 ret['url'] = urlstring
                                 try:                        
                                         ret['note']=bs2.find('ul',{'class':'cf-hero-bts-list'}).get_text()
@@ -103,13 +103,75 @@ def checkLinuxAndGetPage(urlstring):
 
 #print(checkLinuxAndGetPage("https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/dell-latitude-7310/spd/latitude-13-7310-2-in-1-laptop/al7310"))
 
+
+def pclinkget(bs,currenturl,arr):
+        findflag = False
+        for a in bs.find_all("div",{'class':'ps-title'}):
+                s = a.find("a")
+                if s != -1 :
+                        findflag = True
+                        arr.append(urllib.parse.urljoin(currenturl,urllib.parse.quote(s.get("href"))))
+
+        if findflag == False:
+                for a in bs.find_all("h3",{'class':'ps-title'}):
+                        s = a.find("a")
+                        if s != -1 :
+                                findflag = True
+                                arr.append(urllib.parse.urljoin(currenturl,urllib.parse.quote(s.get("href"))))
+
+
+urlarr = []
+if True:
+        page1 = urllib.request.urlopen(targeturl)
+        for a in BeautifulSoup(page1, "html.parser").select("#cat-fran-rows > div.cat-fran-card"):
+                for b in a.find_all("div",{'class':'cat-fran-card-img'}):
+                        findok = False
+                        s=b.find("a")
+                        if s != -1 :
+                                ll = urllib.parse.urljoin(targeturl,urllib.parse.quote(s.get("href")))
+                                page2 = urllib.request.urlopen(ll)
+                                bs = BeautifulSoup(page2,"html.parser")
+                                
+                                #if bs.find("div",{'class':'btn-group'}) != None:
+                                if bs.find("div",{'class':'franchise-series-title'}) == None:
+                                        # 存在したら　ok
+                                        pclinkget(bs,ll,urlarr)
+                                else:
+                                        # 存在しなかったら　もういちどネスト
+                                        for c in bs.select("div.franchise-series-title"):
+                                                s = c.find("a")
+                                                ll =urllib.parse.urljoin(ll, urllib.parse.quote(s.get("href")))
+                                                page3 = urllib.request.urlopen(ll)
+                                                bs2 = BeautifulSoup(page3, "html.parser")
+                                                pclinkget(bs2,ll,urlarr)
+                                                page3.close()
+                                
+                                page2.close()
+        page1.close()
+
+
 #----- get webpage data
+#getdat = checkLinuxAndGetPage("https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/new-latitude-3510-%E3%83%99%E3%83%BC%E3%82%B7%E3%83%83%E3%82%AF%E3%83%A2%E3%83%87%E3%83%AB/spd/latitude-15-3510-laptop/cal0010w135t04on1ojp?configurationid=d476fab8-ad64-4dcf-a232-de2070f38284")
+#getdat = checkLinuxAndGetPage("https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/vostro-15-30003580-%E5%8D%B3%E7%B4%8D-%E3%82%A8%E3%83%B3%E3%83%88%E3%83%AA%E3%83%BC%E3%83%A2%E3%83%87%E3%83%AB-a-1/spd/vostro-15-3580-laptop/smv35063580c04on2tjp")
+
+#urlarr = []
+#urlarr.append("https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/new-latitude-3510-%E3%83%99%E3%83%BC%E3%82%B7%E3%83%83%E3%82%AF%E3%83%A2%E3%83%87%E3%83%AB/spd/latitude-15-3510-laptop/cal0010w135t04on1ojp?configurationid=d476fab8-ad64-4dcf-a232-de2070f38284")
+#urlarr.append("https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/vostro-15-30003580-%E5%8D%B3%E7%B4%8D-%E3%82%A8%E3%83%B3%E3%83%88%E3%83%AA%E3%83%BC%E3%83%A2%E3%83%87%E3%83%AB-a-1/spd/vostro-15-3580-laptop/smv35063580c04on2tjp")
+#urlarr.append("https://www.dell.com/ja-jp/work/shop/%E3%83%87%E3%83%AB%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%88%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3/latitude-3400-%E3%83%99%E3%83%BC%E3%82%B7%E3%83%83%E3%82%AF%E3%83%A2%E3%83%87%E3%83%AB/spd/latitude-14-3400-laptop/cal0070w134t08on1ojp")
 linuxproduct = []
+if True:
+        for url in set(urlarr): #'重複分を排除'
+                getdat = checkLinuxAndGetPage(url)
+                if len(getdat) > 0:
+                        linuxproduct.append(getdat)  
+
+
+
 if True :
         for a in pclist(BeautifulSoup(urllib.request.urlopen(targeturl), "html.parser")):
                 #print (a)
                 bs = BeautifulSoup(urllib.request.urlopen(a,timeout=urltimeout), "html.parser")
-                for sec in bs.find_all("section",{'class':'ps-top'}):
+                for sec in bs.find_all("div",{'class':'franchise-'}):
                         linuxflag = 0
                         url='https:' + urllib.parse.quote(sec.find("a",{'class':'dellmetrics-iclickthru'}).get("href"))
                         getdat = checkLinuxAndGetPage(url)
@@ -192,8 +254,10 @@ if True :
 linkshare.close(browser)
 
 if True :
-	body=open('dell.html',encoding='utf-8',mode='r').read()
-	p = bloggerpost.open()
-	title='Linuxノートパソコンが買える DELL製'+str(len(linuxproduct)+1)+'機種 '+today+'更新'
-	bloggerpost.update(posts=p,postId='7870701470902384798',title=title,body=body)
-
+        # 0件以上でないと更新させない
+        if len(linuxproduct) > 0:
+                body=open('dell.html',encoding='utf-8',mode='r').read()
+                p = bloggerpost.open()
+                title='Linuxノートパソコンが買える DELL製'+str(len(linuxproduct)+1)+'機種 '+today+'更新'
+                bloggerpost.update(posts=p,postId='7870701470902384798',title=title,body=body)
+        
